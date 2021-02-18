@@ -5,8 +5,6 @@ import com.wongc.stm.model.enums.UserType;
 
 public class Tenant extends User {
     private String company;
-    private String primaryContact;
-    private String primaryEmail;
     private String billingContact;
     private String billingEmail;
     private TenantStatus tenantStatus;

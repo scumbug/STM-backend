@@ -1,6 +1,9 @@
 package com.wongc.stm.model;
 
+import org.springframework.data.annotation.Id;
+
 public class Unit {
+    @Id
     private int unitId;
     private String unitNumber;
     private double floorArea;
