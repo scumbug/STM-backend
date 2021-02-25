@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.wongc.stm.model.User;
-import com.wongc.stm.service.UserService;
+import com.wongc.stm.model.Contact;
+import com.wongc.stm.service.ContactService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,57 +21,60 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/contacts")
+public class ContactController {
     @Autowired
-    private UserService service;
+    private ContactService service;
 
     /*
      * Standard CRUD endpoints
      */
 
     @GetMapping("/")
-    public List<User> getUsers() {
-        return (List<User>) service.findAll();
+    public List<Contact> getUsers() {
+        return (List<Contact>) service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
-        Optional<User> user = service.findById(id);
-        if(user.isEmpty()) {
+    public Optional<Contact> findById(@PathVariable Long id) {
+        Optional<Contact> contact = service.findById(id);
+        if(contact.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
         }
-        return user;
+        return contact;
     }
 
-    @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
-        User res = service.save(user);
+    @PostMapping("/{id}")
+    public Contact saveContact(@RequestBody Contact contact) {
+        Contact res = service.save(contact);
         return res;
     }
 
     @PutMapping("/{id}")
-    public User updatUser(@RequestBody User user) {
-        if(!service.existsById(user.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Contact updateContact(@RequestBody Contact contact){
+        if(!service.existsById(contact.getContactId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contact not found");
         }
-        User res = service.update(user);
+        Contact res = service.update(contact);
         if(res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contact not found");
         }
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUserById(@PathVariable Long id){
+    public Map<String,Object> deleteContactbyId(@PathVariable Long id){
         if(!service.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contact not found");
         }
         service.deleteById(id);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status","User deleted");
+        map.put("status","Contact deleted");
         return map;
     }
 
+    @GetMapping("/users/{id}")
+    public List<Contact> findByUserId(@PathVariable Long id) {
+        return service.findByUserId(id);
+    }
 }

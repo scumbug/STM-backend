@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.wongc.stm.model.User;
-import com.wongc.stm.service.UserService;
+import com.wongc.stm.model.Unit;
+import com.wongc.stm.service.UnitService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,56 +21,55 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/units")
+public class UnitController {
     @Autowired
-    private UserService service;
-
+    private UnitService service;
+    
     /*
      * Standard CRUD endpoints
      */
 
     @GetMapping("/")
-    public List<User> getUsers() {
-        return (List<User>) service.findAll();
+    public List<Unit> getUnits() {
+        return (List<Unit>) service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
-        Optional<User> user = service.findById(id);
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Optional<Unit> findById(@PathVariable Long id) {
+        Optional<Unit> Unit = service.findById(id);
+        if(Unit.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unit not found");
         }
-        return user;
+        return Unit;
     }
 
-    @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
-        User res = service.save(user);
+    @PostMapping("/{id}")
+    public Unit saveUnit(@RequestBody Unit Unit) {
+        Unit res = service.save(Unit);
         return res;
     }
 
     @PutMapping("/{id}")
-    public User updatUser(@RequestBody User user) {
-        if(!service.existsById(user.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Unit updatUnit(@RequestBody Unit Unit) {
+        if(!service.existsById(Unit.getUnitId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unit not found");
         }
-        User res = service.update(user);
+        Unit res = service.update(Unit);
         if(res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unit not found");
         }
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUserById(@PathVariable Long id){
+    public Map<String, Object> deleteUnitById(@PathVariable Long id){
         if(!service.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Unit not found");
         }
         service.deleteById(id);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status","User deleted");
+        map.put("status","Unit deleted");
         return map;
     }
 

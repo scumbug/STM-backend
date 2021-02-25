@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.wongc.stm.model.User;
-import com.wongc.stm.service.UserService;
+import com.wongc.stm.model.Payment;
+import com.wongc.stm.service.PaymentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,56 +21,55 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/payments")
+public class PaymentController {
     @Autowired
-    private UserService service;
+    private PaymentService service;
 
-    /*
+        /*
      * Standard CRUD endpoints
      */
 
     @GetMapping("/")
-    public List<User> getUsers() {
-        return (List<User>) service.findAll();
+    public List<Payment> getPayments() {
+        return (List<Payment>) service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
-        Optional<User> user = service.findById(id);
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Optional<Payment> findById(@PathVariable Long id) {
+        Optional<Payment> Payment = service.findById(id);
+        if(Payment.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
-        return user;
+        return Payment;
     }
 
-    @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
-        User res = service.save(user);
+    @PostMapping("/{id}")
+    public Payment savePayment(@RequestBody Payment Payment) {
+        Payment res = service.save(Payment);
         return res;
     }
 
     @PutMapping("/{id}")
-    public User updatUser(@RequestBody User user) {
-        if(!service.existsById(user.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Payment updatPayment(@RequestBody Payment Payment) {
+        if(!service.existsById(Payment.getPaymentId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
-        User res = service.update(user);
+        Payment res = service.update(Payment);
         if(res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUserById(@PathVariable Long id){
+    public Map<String, Object> deletePaymentById(@PathVariable Long id){
         if(!service.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
         service.deleteById(id);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status","User deleted");
+        map.put("status","Payment deleted");
         return map;
     }
 

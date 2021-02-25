@@ -2,15 +2,20 @@ package com.wongc.stm.model;
 
 import com.wongc.stm.model.enums.UserType;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
+
+import lombok.Data;
+
+@Data
+@Table("users")
 public class User {
-    private Long userId;
+    private @Id Long userId;
     private UserType type;
     private String username;
     private String password;
     private String name;
-    private String primaryContact;
-    private String primaryEmail;
-
+    
     public UserType getType() {
         return type;
     }

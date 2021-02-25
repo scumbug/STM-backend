@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.wongc.stm.model.User;
-import com.wongc.stm.service.UserService;
+import com.wongc.stm.model.Lease;
+import com.wongc.stm.service.LeaseService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,56 +21,55 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/leases")
+public class LeaseController {
     @Autowired
-    private UserService service;
+    private LeaseService service;
 
-    /*
+        /*
      * Standard CRUD endpoints
      */
 
     @GetMapping("/")
-    public List<User> getUsers() {
-        return (List<User>) service.findAll();
+    public List<Lease> getLeases() {
+        return (List<Lease>) service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
-        Optional<User> user = service.findById(id);
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Optional<Lease> findById(@PathVariable Long id) {
+        Optional<Lease> Lease = service.findById(id);
+        if(Lease.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
-        return user;
+        return Lease;
     }
 
-    @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
-        User res = service.save(user);
+    @PostMapping("/{id}")
+    public Lease saveLease(@RequestBody Lease Lease) {
+        Lease res = service.save(Lease);
         return res;
     }
 
     @PutMapping("/{id}")
-    public User updatUser(@RequestBody User user) {
-        if(!service.existsById(user.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Lease updatLease(@RequestBody Lease Lease) {
+        if(!service.existsById(Lease.getLeaseId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
-        User res = service.update(user);
+        Lease res = service.update(Lease);
         if(res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUserById(@PathVariable Long id){
+    public Map<String, Object> deleteLeaseById(@PathVariable Long id){
         if(!service.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
         service.deleteById(id);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status","User deleted");
+        map.put("status","Lease deleted");
         return map;
     }
 

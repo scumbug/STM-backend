@@ -5,12 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.wongc.stm.model.User;
-import com.wongc.stm.service.UserService;
+import com.wongc.stm.model.Schedule;
+import com.wongc.stm.service.ScheduleService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,57 +21,57 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/users")
-public class UserController {
-
+@RequestMapping("/schedules")
+public class ScheduleController {
     @Autowired
-    private UserService service;
+    private ScheduleService service;
 
     /*
      * Standard CRUD endpoints
      */
 
     @GetMapping("/")
-    public List<User> getUsers() {
-        return (List<User>) service.findAll();
+    public List<Schedule> getSchedules() {
+        return (List<Schedule>) service.findAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<User> findById(@PathVariable Long id) {
-        Optional<User> user = service.findById(id);
-        if(user.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Optional<Schedule> findById(@PathVariable Long id) {
+        Optional<Schedule> Schedule = service.findById(id);
+        if(Schedule.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Schedule not found");
         }
-        return user;
+        return Schedule;
     }
 
-    @PostMapping("/")
-    public User saveUser(@RequestBody User user) {
-        User res = service.save(user);
+    @PostMapping("/{id}")
+    public Schedule saveSchedule(@RequestBody Schedule Schedule) {
+        Schedule res = service.save(Schedule);
         return res;
     }
 
     @PutMapping("/{id}")
-    public User updatUser(@RequestBody User user) {
-        if(!service.existsById(user.getUserId())) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+    public Schedule updatSchedule(@RequestBody Schedule Schedule) {
+        if(!service.existsById(Schedule.getScheduleId())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Schedule not found");
         }
-        User res = service.update(user);
+        Schedule res = service.update(Schedule);
         if(res == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Schedule not found");
         }
         return res;
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> deleteUserById(@PathVariable Long id){
+    public Map<String, Object> deleteScheduleById(@PathVariable Long id){
         if(!service.existsById(id)){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Schedule not found");
         }
         service.deleteById(id);
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("status","User deleted");
+        map.put("status","Schedule deleted");
         return map;
     }
+
 
 }
