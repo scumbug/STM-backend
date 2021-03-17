@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Contact;
-import com.wongc.stm.service.ContactService;
+import com.wongc.stm.service.ContactServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/contacts")
 public class ContactController {
     @Autowired
-    private ContactService service;
+    private ContactServiceImpl service;
 
     /*
      * Standard CRUD endpoints
@@ -38,7 +38,7 @@ public class ContactController {
     @GetMapping("/{id}")
     public Optional<Contact> findById(@PathVariable Long id) {
         Optional<Contact> contact = service.findById(id);
-        if(contact.isEmpty()) {
+        if(!contact.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User not found");
         }
         return contact;

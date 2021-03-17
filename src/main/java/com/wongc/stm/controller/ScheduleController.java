@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Schedule;
-import com.wongc.stm.service.ScheduleService;
+import com.wongc.stm.service.ScheduleServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/schedules")
 public class ScheduleController {
     @Autowired
-    private ScheduleService service;
+    private ScheduleServiceImpl service;
 
     /*
      * Standard CRUD endpoints

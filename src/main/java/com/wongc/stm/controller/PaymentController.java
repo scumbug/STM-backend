@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Payment;
-import com.wongc.stm.service.PaymentService;
+import com.wongc.stm.service.PaymentServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/payments")
 public class PaymentController {
     @Autowired
-    private PaymentService service;
+    private PaymentServiceImpl service;
 
         /*
      * Standard CRUD endpoints

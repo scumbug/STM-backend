@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Lease;
-import com.wongc.stm.service.LeaseService;
+import com.wongc.stm.service.LeaseServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/leases")
 public class LeaseController {
     @Autowired
-    private LeaseService service;
+    private LeaseServiceImpl service;
 
         /*
      * Standard CRUD endpoints

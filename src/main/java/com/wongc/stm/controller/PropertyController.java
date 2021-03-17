@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Property;
-import com.wongc.stm.service.PropertyService;
+import com.wongc.stm.service.PropertyServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,17 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/properties")
+@RequestMapping("/api/properties")
 public class PropertyController {
     @Autowired
-    private PropertyService service;
+    private PropertyServiceImpl service;
 
     /*
      * Standard CRUD endpoints
      */
 
     // TODO: implement paging
-    @GetMapping("/")
+    @GetMapping("")
     public List<Property> getProperties() {
         return service.findAll();
     }
@@ -39,20 +39,20 @@ public class PropertyController {
     @GetMapping("/{id}")
     public Optional<Property> findById(@PathVariable Long id) {
         Optional<Property> Property = service.findById(id);
-        if(Property.isEmpty()) {
+        if(!Property.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Property not found");
         }
         return Property;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("")
     public Property saveProperty(@RequestBody Property Property) {
         Property res = service.save(Property);
         return res;
     }
 
-    @PutMapping("/{id}")
-    public Property updatProperty(@RequestBody Property Property) {
+    @PutMapping("")
+    public Property updateProperty(@RequestBody Property Property) {
         if(!service.existsById(Property.getPropertyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Property not found");
         }
