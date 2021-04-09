@@ -38,7 +38,7 @@ public class ScheduleController {
     @GetMapping("/{id}")
     public Optional<Schedule> findById(@PathVariable Long id) {
         Optional<Schedule> Schedule = service.findById(id);
-        if(Schedule.isEmpty()) {
+        if(!Schedule.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Schedule not found");
         }
         return Schedule;

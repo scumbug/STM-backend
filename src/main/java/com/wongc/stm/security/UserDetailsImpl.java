@@ -16,11 +16,13 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private String type;
+    private Long id;
 
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.type = user.getType().name();
+        this.id = user.getUserId();
     }
 
     // Cast user role into GrantedAuthority Obj

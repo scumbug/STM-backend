@@ -32,7 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public Payment update(Payment Payment) {
         Optional<Payment> res = repository.findById(Payment.getPaymentId());
-        if(res.isEmpty())
+        if(!res.isPresent())
             return null;
         Payment tmp = res.get();
         return repository.save(tmp);

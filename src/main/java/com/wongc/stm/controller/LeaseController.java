@@ -38,7 +38,7 @@ public class LeaseController {
     @GetMapping("/{id}")
     public Optional<Lease> findById(@PathVariable Long id) {
         Optional<Lease> Lease = service.findById(id);
-        if(Lease.isEmpty()) {
+        if(!Lease.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
         return Lease;

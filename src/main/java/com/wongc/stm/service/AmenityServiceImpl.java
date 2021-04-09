@@ -33,7 +33,7 @@ public class AmenityServiceImpl implements AmenityService {
     @Override
     public Amenity update(Amenity Amenity) {
         Optional<Amenity> res = repository.findById(Amenity.getAmenityId());
-        if (res.isEmpty())
+        if (!res.isPresent())
             return null;
         Amenity tmp = res.get();
         return repository.save(tmp);

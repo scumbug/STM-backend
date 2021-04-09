@@ -12,5 +12,6 @@ public interface UnitService {
     public Unit update(Unit Unit);
     public void deleteById(Long id);
     public Unit save(Unit Unit);
+    public List<Unit> saveAll(List<Unit> Units);
     public List<Unit> findByPropertyId(Long id);
 }

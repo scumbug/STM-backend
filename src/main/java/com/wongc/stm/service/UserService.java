@@ -13,5 +13,6 @@ public interface UserService {
     public User update(User user);
     public void deleteById(Long id);
     public User save(User user);
+    public List<User> findAllAgents();
 
 }

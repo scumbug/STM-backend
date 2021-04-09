@@ -49,6 +49,11 @@ public class UnitServiceImpl implements UnitService {
 	}
 
     @Override
+    public List<Unit> saveAll(List<Unit> Units) {
+        return (List<Unit>) repository.saveAll(Units);
+    }
+
+    @Override
     public List<Unit> findByPropertyId(Long id) {
         return repository.findByPropertyId(id);
     }

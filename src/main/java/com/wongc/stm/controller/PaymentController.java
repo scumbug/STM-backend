@@ -38,7 +38,7 @@ public class PaymentController {
     @GetMapping("/{id}")
     public Optional<Payment> findById(@PathVariable Long id) {
         Optional<Payment> Payment = service.findById(id);
-        if(Payment.isEmpty()) {
+        if(!Payment.isPresent()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
         return Payment;

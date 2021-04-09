@@ -1,9 +1,6 @@
 package com.wongc.stm.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.wongc.stm.model.Unit;
 import com.wongc.stm.service.UnitServiceImpl;
@@ -37,9 +34,15 @@ public class UnitController {
         return Unit;
     }
 
-    @PostMapping("/units/{id}")
+    @PostMapping("/units")
     public Unit saveUnit(@RequestBody Unit Unit) {
         Unit res = service.save(Unit);
+        return res;
+    }
+
+    @PostMapping("/units/bulk")
+    public List<Unit> saveAllUnits(@RequestBody ArrayList<Unit> Units) {
+        List<Unit> res = service.saveAll(Units);
         return res;
     }
 

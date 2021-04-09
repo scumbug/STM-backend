@@ -32,7 +32,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public Schedule update(Schedule Schedule) {
         Optional<Schedule> res = repository.findById(Schedule.getScheduleId());
-        if(res.isEmpty())
+        if(!res.isPresent())
             return null;
         Schedule tmp = res.get();
         return repository.save(tmp);

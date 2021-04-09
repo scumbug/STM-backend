@@ -32,7 +32,7 @@ public class PropertyServiceImpl implements PropertyService {
     @Override
     public Property update(Property Property) {
         Optional<Property> res = repository.findById(Property.getPropertyId());
-        if(res.isEmpty())
+        if(!res.isPresent())
             return null;
         Property tmp = res.get();
         return repository.save(tmp);

@@ -32,7 +32,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public Contact update(Contact Contact) {
         Optional<Contact> res = repository.findById(Contact.getContactId());
-        if(res.isEmpty())
+        if(!res.isPresent())
             return null;
         Contact tmp = res.get();
         return repository.save(tmp);

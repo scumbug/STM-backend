@@ -1,28 +1,27 @@
 package com.wongc.stm.model;
 
 import com.wongc.stm.model.enums.TenantStatus;
-import com.wongc.stm.model.enums.UserType;
 
 import lombok.Data;
-import org.springframework.data.relational.core.mapping.MappedCollection;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
 @Table("tenants")
-public class Tenant extends User {
-    private Long tenantId;
+public class Tenant {
+    private @Id Long tenantId;
+    private Long userId;
+    private Long assignedAgent;
     private String company;
     private TenantStatus tenantStatus;
     private String notes;
-    private User assignedAgent;
 
-    // force user type to be tenant
-    @Override
-    public void setType(UserType type) {
-        super.setType(UserType.TENANT);
-    }
+    //@MappedCollection(keyColumn = "assigned_agent", idColumn = "user_id")
+    //private User agent;
 
-    //@MappedCollection(idColumn = "unit_id")
-    private Lease leasedUnit;
+    //@MappedCollection(idColumn = "user_id")
+    //private Lease leasedUnit;
+
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wongc.stm.model.User;
+import com.wongc.stm.model.enums.UserType;
 import com.wongc.stm.repository.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User user) {
         Optional<User> res = repository.findById(user.getUserId());
-        if (res.isEmpty())
+        if (!res.isPresent())
             return null;
         User tmp = res.get();
         return repository.save(tmp);
@@ -47,5 +48,9 @@ public class UserServiceImpl implements UserService {
     public User save(User user) {
         // TODO: username dup check
         return repository.save(user);
+    }
+    @Override
+    public List<User> findAllAgents() {
+        return repository.findByType(UserType.SALES);
     }
 }

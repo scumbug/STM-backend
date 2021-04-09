@@ -32,7 +32,7 @@ public class LeaseServiceImpl implements LeaseService {
     @Override
     public Lease update(Lease Lease) {
         Optional<Lease> res = repository.findById(Lease.getLeaseId());
-        if(res.isEmpty())
+        if(!res.isPresent())
             return null;
         Lease tmp = res.get();
         return repository.save(tmp);

@@ -74,4 +74,10 @@ public class UserController {
         return map;
     }
 
+    // GET all sales agent
+    @GetMapping("/agents")
+    public List<User> getAllAgents() {
+        return (List<User>) service.findAllAgents();
+    }
+
 }
