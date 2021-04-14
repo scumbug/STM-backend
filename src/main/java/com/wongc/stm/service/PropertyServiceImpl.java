@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wongc.stm.model.Property;
+import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.repository.PropertyRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,4 +48,15 @@ public class PropertyServiceImpl implements PropertyService {
 	public Property save(Property Property) {
 		return repository.save(Property);
 	}
+
+    @Override
+    public Long checkTotalLeasedUnits(Long propertyId) {
+        repository.getALlLeasedUnitById(propertyId);
+        return repository.getALlLeasedUnitById(propertyId);
+    }
+
+    @Override
+    public List<Property> findByPropertyStatus(PropertyStatus active) {
+        return repository.findByPropertyStatus(active);
+    }
 }

@@ -81,8 +81,15 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
-    public List<TenantWrapper> aggregate() {
-        List<Tenant> temp = (List<Tenant>) tenantRepository.findAll();
+    public List<TenantWrapper> aggregate(TenantStatus tenantStatus) {
+        List<Tenant> temp;
+        if(tenantStatus == TenantStatus.ACTIVE) {
+            temp = tenantRepository.findByTenantStatus(TenantStatus.ACTIVE);
+        } else if(tenantStatus == TenantStatus.POTENTIAL) {
+            temp = tenantRepository.findByTenantStatus(TenantStatus.POTENTIAL);
+        } else {
+            temp = (List<Tenant>) tenantRepository.findAll();
+        }
         List<TenantWrapper> res = new ArrayList<>();
         for (Tenant tenant : temp) {
             Optional<User> user = userRepository.findById(tenant.getUserId());
@@ -96,6 +103,15 @@ public class TenantServiceImpl implements TenantService {
             res.add(wrappedTenant);
         }
         return res;
+    }
+
+    @Override
+    public Optional<Tenant> convert(Long id) {
+        Optional<Tenant> conversion = tenantRepository.findById(id);
+        conversion.get().setTenantId(id);
+        conversion.get().setTenantStatus(TenantStatus.ACTIVE);
+        tenantRepository.save(conversion.get());
+        return conversion;
     }
 
 }

@@ -6,10 +6,12 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.wongc.stm.model.Property;
+import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.service.PropertyServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/properties")
+@PreAuthorize("hasRole('SUPER') or hasRole('ADMIN')")
 public class PropertyController {
     @Autowired
     private PropertyServiceImpl service;
@@ -30,10 +33,9 @@ public class PropertyController {
      * Standard CRUD endpoints
      */
 
-    // TODO: implement paging
     @GetMapping("")
     public List<Property> getProperties() {
-        return service.findAll();
+        return service.findByPropertyStatus(PropertyStatus.ACTIVE);
     }
 
     @GetMapping("/{id}")
@@ -72,6 +74,11 @@ public class PropertyController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status","Property deleted");
         return map;
+    }
+
+    @GetMapping("/{id}/leasecount")
+    public Long findLeaseCount(@PathVariable Long id) {
+        return service.checkTotalLeasedUnits(id);
     }
 
 }

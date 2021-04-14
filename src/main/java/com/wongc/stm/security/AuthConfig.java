@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-//@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
@@ -50,15 +50,9 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests()
-                    .antMatchers("/**").permitAll() // specify path that doesnt need auth
-                    .antMatchers("/tenants").hasRole("TENANT") // restrict tenant access
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login").permitAll()
-                    .and()
-                .logout().permitAll();
+                .authorizeRequests().antMatchers("/api/**").permitAll()
+                .antMatchers("/backend/authenticate").permitAll()
+                .anyRequest().authenticated();
 
         http.addFilterBefore(authJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }

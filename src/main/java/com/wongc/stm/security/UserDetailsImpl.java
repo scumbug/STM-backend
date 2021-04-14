@@ -36,6 +36,10 @@ public class UserDetailsImpl implements UserDetails {
         return roles;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     @Override
     public String getPassword() {
         // TODO Auto-generated method stub

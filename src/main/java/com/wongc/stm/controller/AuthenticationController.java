@@ -3,6 +3,8 @@ package com.wongc.stm.controller;
 import com.wongc.stm.repository.UserRepository;
 import com.wongc.stm.security.JwtUtils;
 import com.wongc.stm.security.UserDetailsImpl;
+import com.wongc.stm.wrapper.AuthRequestWrapper;
+import com.wongc.stm.wrapper.AuthWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,11 +35,11 @@ public class AuthenticationController {
     @Autowired
     JwtUtils jwtUtils;
 
-    /*@PostMapping("/authenticate")
-    public ResponseEntity<> login(@RequestParam String username, @RequestParam String password) {
+    @PostMapping("/backend/authenticate")
+    public ResponseEntity<?> login(@RequestBody AuthRequestWrapper auth) {
         // TODO: implement login logic
         Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username,password)
+                new UsernamePasswordAuthenticationToken(auth.getUsername(),auth.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -45,6 +48,11 @@ public class AuthenticationController {
                 .map(item -> item.getAuthority())
                 .collect(Collectors.toList());
 
-        return null;
-    }*/
+        return ResponseEntity.ok(new AuthWrapper(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                roles));
+
+    }
+
 }

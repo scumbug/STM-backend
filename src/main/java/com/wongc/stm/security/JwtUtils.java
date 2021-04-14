@@ -5,6 +5,7 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 
 import io.jsonwebtoken.ExpiredJwtException;
@@ -21,10 +22,10 @@ public class JwtUtils {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
     @Value("${jwt.secret}")
-	private String jwtSecret;
+	String jwtSecret;
 
     @Value("${jwt.expiry}")
-    private int jwtExpiry;
+    int jwtExpiry;
 
     public String generateJwtToken(Authentication authentication) {
 
@@ -34,7 +35,7 @@ public class JwtUtils {
 		return Jwts.builder()
 				.setSubject((user.getUsername()))
 				.setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + jwtExpiry))
+				.setExpiration(new Date((new Date()).getTime() + (jwtExpiry * 1000 * 60 )))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();
 	}

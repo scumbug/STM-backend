@@ -1,10 +1,7 @@
 package com.wongc.stm.controller;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.wongc.stm.dto.TenantDTO;
-import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Tenant;
-import com.wongc.stm.model.User;
 import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.service.TenantServiceImpl;
 import com.wongc.stm.wrapper.TenantWrapper;
@@ -14,12 +11,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tenants")
-//@PreAuthorize("hasRole('TENANT')")
+@PreAuthorize("hasRole('SALES') or hasRole('SUPER')")
 public class TenantController {
     @Autowired
     private TenantServiceImpl service;
@@ -28,7 +25,7 @@ public class TenantController {
     private ModelMapper modelMapper;
 
     @GetMapping("")
-    public List<Tenant> getTenants(@RequestParam(required = false) TenantStatus tenantStatus) {
+    public List<Tenant> getTenants(@RequestParam(required = true) TenantStatus tenantStatus) {
         if(tenantStatus == TenantStatus.POTENTIAL) {
             return (List<Tenant>) service.findAllPotential();
         } else if(tenantStatus == TenantStatus.ACTIVE) {
@@ -45,8 +42,8 @@ public class TenantController {
     }
 
     @GetMapping("/aggregate")
-    public List<TenantWrapper> getAggregate() {
-        return service.aggregate();
+    public List<TenantWrapper> getAggregate(@RequestParam(required = false) TenantStatus tenantStatus) {
+            return service.aggregate(tenantStatus);
     }
 
     @GetMapping("/dto")
@@ -59,5 +56,10 @@ public class TenantController {
     private TenantDTO convertToDTO(Tenant tenant) {
         TenantDTO tenantDTO = modelMapper.map(tenant,TenantDTO.class);
         return tenantDTO;
+    }
+
+    @GetMapping("/convert/{id}")
+    private Optional<Tenant> convertTenant(@PathVariable Long id) {
+        return service.convert(id);
     }
 }

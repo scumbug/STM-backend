@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Tenant;
 import com.wongc.stm.model.User;
+import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.wrapper.TenantWrapper;
 
 public interface TenantService {
@@ -20,5 +21,7 @@ public interface TenantService {
 
     public List<Tenant> findAllActive();
 
-    public List<TenantWrapper> aggregate();
+    public List<TenantWrapper> aggregate(TenantStatus tenantStatus);
+
+    public Optional<Tenant> convert(Long id);
 }

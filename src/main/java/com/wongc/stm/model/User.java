@@ -17,7 +17,7 @@ public class User {
     private @Id Long userId;
     private UserType type;
     private String username;
-    private @JsonIgnore String password;
+    private String password;
     private String name;
 
     @MappedCollection(keyColumn = "user_id", idColumn = "user_id")

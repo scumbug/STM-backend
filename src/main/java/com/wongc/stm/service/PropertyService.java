@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wongc.stm.model.Property;
+import com.wongc.stm.model.enums.PropertyStatus;
 
 public interface PropertyService {
     public List<Property> findAll();
@@ -12,4 +13,7 @@ public interface PropertyService {
     public Property update(Property Property);
     public void deleteById(Long id);
     public Property save(Property Property);
+    public Long checkTotalLeasedUnits(Long propertyId);
+
+    List<Property> findByPropertyStatus(PropertyStatus active);
 }
