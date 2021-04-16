@@ -46,18 +46,6 @@ public class TenantController {
             return service.aggregate(tenantStatus);
     }
 
-    @GetMapping("/dto")
-    public List<TenantDTO> tryDTO() {
-        List<Tenant> tenants = service.findAll();
-        return tenants.stream().map(this::convertToDTO).collect(Collectors.toList());
-
-    }
-
-    private TenantDTO convertToDTO(Tenant tenant) {
-        TenantDTO tenantDTO = modelMapper.map(tenant,TenantDTO.class);
-        return tenantDTO;
-    }
-
     @GetMapping("/convert/{id}")
     private Optional<Tenant> convertTenant(@PathVariable Long id) {
         return service.convert(id);

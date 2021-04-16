@@ -5,9 +5,9 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table("admin")
-public class Admin {
-    private @Id Long adminId;
+@Table("setting")
+public class Setting {
+    private @Id Long settingId;
     private String name;
     private String content;
 }

@@ -1,12 +1,10 @@
 package com.wongc.stm.scheduler;
 
-import com.wongc.stm.model.Constants;
 import com.wongc.stm.model.Lease;
 import com.wongc.stm.model.Payment;
-import com.wongc.stm.repository.AdminRepository;
+import com.wongc.stm.repository.SettingRepository;
 import com.wongc.stm.repository.LeaseRepository;
 import com.wongc.stm.repository.PaymentRepository;
-import com.wongc.stm.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -30,7 +28,7 @@ public class PaymentScheduler {
     private PaymentRepository paymentRepository;
 
     @Autowired
-    private AdminRepository adminRepository;
+    private SettingRepository settingRepository;
 
     private final LocalDate today = LocalDate.now();
 
@@ -59,7 +57,7 @@ public class PaymentScheduler {
 
         //Define email token replacement
         Pattern pattern = Pattern.compile("\\{(.+?)\\}");
-        String template = adminRepository.findByName("email_template").getContent();
+        String template = settingRepository.findByName("email_template").getContent();
 
         if(!unpaidRent.isEmpty()) {
             // aggregate total number of months unpaid per tenant
