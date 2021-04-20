@@ -24,4 +24,8 @@ public interface TenantService {
     public List<TenantWrapper> aggregate(TenantStatus tenantStatus);
 
     public Optional<Tenant> convert(Long id);
+
+    public List<Tenant> findAllPending();
+
+    Tenant findByUserId(Long id);
 }

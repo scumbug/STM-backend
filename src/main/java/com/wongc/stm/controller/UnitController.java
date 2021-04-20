@@ -49,7 +49,7 @@ public class UnitController {
         return res;
     }
 
-    @PutMapping("/units/{id}")
+    @PutMapping("/units")
     public Unit updateUnit(@RequestBody Unit Unit) {
         if (!service.existsById(Unit.getUnitId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unit not found");
@@ -75,6 +75,11 @@ public class UnitController {
     @GetMapping("/properties/{id}/unit")
     public List<Unit> getUnitsByPropertyId(@PathVariable Long id) {
         return (List<Unit>) service.findByPropertyId(id);
+    }
+
+    @GetMapping("/properties/{id}/unit/free")
+    public List<Unit> getUnitsByPropertyIdAndFree(@PathVariable Long id) {
+        return (List<Unit>) service.findFreeUnits(id);
     }
 
 }

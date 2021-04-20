@@ -1,10 +1,12 @@
 package com.wongc.stm.model;
 
+import java.sql.Blob;
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
-import lombok.Data;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -18,5 +20,7 @@ public class Payment {
     private Date paymentDate;
     private Date paymentStartPeriod;
     private Date paymentEndPeriod;
-    // TODO: payment proof img as blob?
+    @JsonIgnore
+    private Blob paymentProof;
+
 }

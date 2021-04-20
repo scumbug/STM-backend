@@ -17,4 +17,5 @@ public class Lease {
     private Date endDate;
     // TODO: lease agreement file as blob?
     private double rent;
+    private boolean archive;
 }

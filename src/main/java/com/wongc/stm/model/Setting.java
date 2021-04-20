@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table("setting")
+@Table("settings")
 public class Setting {
     private @Id Long settingId;
     private String name;

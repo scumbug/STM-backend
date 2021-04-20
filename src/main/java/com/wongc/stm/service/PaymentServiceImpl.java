@@ -1,11 +1,14 @@
 package com.wongc.stm.service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import com.wongc.stm.model.Payment;
 import com.wongc.stm.repository.PaymentRepository;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository repository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public List<Payment> findAll() {
@@ -30,12 +35,12 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Payment update(Payment Payment) {
-        Optional<Payment> res = repository.findById(Payment.getPaymentId());
-        if(!res.isPresent())
-            return null;
-        Payment tmp = res.get();
-        return repository.save(tmp);
+    public Payment update(Payment payment) {
+        Payment res = repository.findById(payment.getPaymentId()).get();
+        res.setAmount(payment.getAmount());
+        res.setPaymentDate(Date.valueOf(LocalDate.now()));
+        //res.setPaymentProof(payment.getPaymentProof());
+        return repository.save(res);
     }
 
     @Override
@@ -47,5 +52,10 @@ public class PaymentServiceImpl implements PaymentService {
 	public Payment save(Payment Payment) {
 		return repository.save(Payment);
 	}
+
+    @Override
+    public List<Payment> findPaymentsForTenant(Long tenantId, Long unitId) {
+        return repository.findPaymentsForTenant(tenantId,unitId);
+    }
 
 }

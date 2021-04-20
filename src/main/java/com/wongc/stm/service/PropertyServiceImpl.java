@@ -3,10 +3,12 @@ package com.wongc.stm.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.wongc.stm.dto.PropertyUpdateDTO;
 import com.wongc.stm.model.Property;
 import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.repository.PropertyRepository;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,10 @@ import org.springframework.stereotype.Service;
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
     private PropertyRepository repository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     @Override
     public List<Property> findAll() {
@@ -31,17 +37,17 @@ public class PropertyServiceImpl implements PropertyService {
     }
 
     @Override
-    public Property update(Property Property) {
-        Optional<Property> res = repository.findById(Property.getPropertyId());
-        if(!res.isPresent())
-            return null;
-        Property tmp = res.get();
-        return repository.save(tmp);
+    public Property update(Property property) {
+        Property res = repository.findById(property.getPropertyId()).get();
+        property.setPropertyId(null);
+        modelMapper.map(property,res);
+        return repository.save(res);
     }
 
     @Override
 	public void deleteById(Long id) {
-        repository.deleteById(id);
+        Property res = repository.findById(id).get();
+        res.setPropertyStatus(PropertyStatus.ARCHIVED);
 	}
 
     @Override

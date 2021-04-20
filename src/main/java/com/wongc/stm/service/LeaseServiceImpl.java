@@ -3,16 +3,29 @@ package com.wongc.stm.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.wongc.stm.dto.UnitRent;
+import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Lease;
+import com.wongc.stm.model.Tenant;
+import com.wongc.stm.model.enums.TenantStatus;
+import com.wongc.stm.repository.ContactRepository;
 import com.wongc.stm.repository.LeaseRepository;
 
+import com.wongc.stm.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LeaseServiceImpl implements LeaseService {
     @Autowired
     private LeaseRepository repository;
+
+    @Autowired
+    private TenantRepository tenantRepository;
+
+    @Autowired
+    private ContactRepository contactRepository;
 
     @Override
     public List<Lease> findAll() {
@@ -44,7 +57,37 @@ public class LeaseServiceImpl implements LeaseService {
 	}
 
     @Override
-	public Lease save(Lease Lease) {
-		return repository.save(Lease);
+	public Lease save(Lease lease) {
+        // add lease to DB
+		return repository.save(lease);
 	}
+
+	@Override
+    public Lease convertTenant(Lease lease, List<Contact> contacts) {
+
+        // change tenant status to PENDING
+        Tenant tenant = tenantRepository.findById(lease.getTenantId()).get();
+        tenant.setTenantStatus(TenantStatus.PENDING);
+        tenant.setLeasedUnit(lease.getUnitId());
+        tenantRepository.save(tenant);
+
+        // add contact
+        for (Contact contact : contacts) {
+            contactRepository.save(contact);
+        }
+
+        //add lease to DB
+        return repository.save(lease);
+    }
+
+    @Override
+    public Optional<Lease> findByUnitId(Long id) {
+        return repository.findByUnitId(id);
+    }
+
+    @Override
+    public List<UnitRent> getHistoricalRentByUnitId(Long id) {
+
+        return repository.findHistoricRentByUnitId(id);
+    }
 }

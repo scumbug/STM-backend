@@ -14,4 +14,6 @@ public interface UnitService {
     public Unit save(Unit Unit);
     public List<Unit> saveAll(List<Unit> Units);
     public List<Unit> findByPropertyId(Long id);
+
+    public List<Unit> findFreeUnits(Long id);
 }

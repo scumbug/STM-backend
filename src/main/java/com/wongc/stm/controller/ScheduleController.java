@@ -10,6 +10,7 @@ import com.wongc.stm.service.ScheduleServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/schedules")
+@RequestMapping("/api/schedules")
+@PreAuthorize("hasRole('SUPER') or hasRole('ADMIN')")
 public class ScheduleController {
     @Autowired
     private ScheduleServiceImpl service;
@@ -30,7 +32,7 @@ public class ScheduleController {
      * Standard CRUD endpoints
      */
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<Schedule> getSchedules() {
         return (List<Schedule>) service.findAll();
     }
@@ -44,7 +46,7 @@ public class ScheduleController {
         return Schedule;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("")
     public Schedule saveSchedule(@RequestBody Schedule Schedule) {
         Schedule res = service.save(Schedule);
         return res;
@@ -71,6 +73,11 @@ public class ScheduleController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status","Schedule deleted");
         return map;
+    }
+
+    @GetMapping("/{id}/confirm")
+    public Schedule confirmSchedule(@PathVariable Long id) {
+        return service.confirmSchedule(id);
     }
 
 

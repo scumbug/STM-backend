@@ -50,7 +50,7 @@ public class PaymentScheduler {
         }
     }
 
-    @Scheduled(fixedRate = 5000)
+    //@Scheduled(fixedRate = 5000)
     public void runReminders() {
         //Grab unpaid rent, collate and send email to tenants
         List<Payment> unpaidRent = paymentRepository.findByPaymentStatus(0);
@@ -79,7 +79,7 @@ public class PaymentScheduler {
                     }
                 }
                 matcher.appendTail(buffer);
-                System.out.println(buffer.toString());
+                System.out.println(buffer);
 
             }
             // send email

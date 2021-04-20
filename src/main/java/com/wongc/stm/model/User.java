@@ -2,7 +2,6 @@ package com.wongc.stm.model;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.wongc.stm.model.enums.UserType;
 
 import org.springframework.data.annotation.Id;

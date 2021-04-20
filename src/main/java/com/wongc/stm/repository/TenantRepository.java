@@ -13,4 +13,6 @@ public interface TenantRepository extends PagingAndSortingRepository<Tenant, Lon
 
 
     List<Tenant> findByTenantStatus(TenantStatus tenantStatus);
+
+    Tenant findByUserId(Long userId);
 }

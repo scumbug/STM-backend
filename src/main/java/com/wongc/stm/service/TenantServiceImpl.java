@@ -22,7 +22,7 @@ public class TenantServiceImpl implements TenantService {
     @Autowired
     private TenantRepository tenantRepository;
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
     @Autowired
     private ContactRepository contactRepository;
 
@@ -59,7 +59,7 @@ public class TenantServiceImpl implements TenantService {
     @Transactional
 	public Tenant save(Tenant tenant, User user, List<Contact> contacts) {
         // add user to DB
-        User savedUser = userRepository.save(user);
+        User savedUser = userService.save(user);
         // get user ID and append to contact and tenant object
         for (Contact contact : contacts) {
             contact.setUserId(savedUser.getUserId());
@@ -81,19 +81,31 @@ public class TenantServiceImpl implements TenantService {
     }
 
     @Override
+    public List<Tenant> findAllPending() {
+        return tenantRepository.findByTenantStatus(TenantStatus.PENDING);
+    }
+
+    @Override
+    public Tenant findByUserId(Long id) {
+        return tenantRepository.findByUserId(id);
+    }
+
+    @Override
     public List<TenantWrapper> aggregate(TenantStatus tenantStatus) {
         List<Tenant> temp;
         if(tenantStatus == TenantStatus.ACTIVE) {
             temp = tenantRepository.findByTenantStatus(TenantStatus.ACTIVE);
         } else if(tenantStatus == TenantStatus.POTENTIAL) {
             temp = tenantRepository.findByTenantStatus(TenantStatus.POTENTIAL);
+        }else if(tenantStatus == TenantStatus.PENDING) {
+            temp = tenantRepository.findByTenantStatus(TenantStatus.PENDING);
         } else {
             temp = (List<Tenant>) tenantRepository.findAll();
         }
         List<TenantWrapper> res = new ArrayList<>();
         for (Tenant tenant : temp) {
-            Optional<User> user = userRepository.findById(tenant.getUserId());
-            Optional<User> assignedAgent = userRepository.findById(tenant.getAssignedAgent());
+            Optional<User> user = userService.findById(tenant.getUserId());
+            Optional<User> assignedAgent = userService.findById(tenant.getAssignedAgent());
             //List<Contact> contact = contactRepository.findByUserId(tenant.getUserId());
             TenantWrapper wrappedTenant = new TenantWrapper();
             wrappedTenant.setUser(user.get());

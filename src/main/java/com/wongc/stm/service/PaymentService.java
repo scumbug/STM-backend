@@ -12,4 +12,6 @@ public interface PaymentService {
     public Payment update(Payment Payment);
     public void deleteById(Long id);
     public Payment save(Payment Payment);
+
+    List<Payment> findPaymentsForTenant(Long tenantId, Long unitId);
 }

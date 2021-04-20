@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.wongc.stm.dto.PropertyUpdateDTO;
 import com.wongc.stm.model.Property;
 import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.service.PropertyServiceImpl;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +30,9 @@ import org.springframework.web.server.ResponseStatusException;
 public class PropertyController {
     @Autowired
     private PropertyServiceImpl service;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     /*
      * Standard CRUD endpoints
@@ -54,11 +59,11 @@ public class PropertyController {
     }
 
     @PutMapping("")
-    public Property updateProperty(@RequestBody Property Property) {
-        if(!service.existsById(Property.getPropertyId())) {
+    public Property updateProperty(@RequestBody Property property) {
+        if(!service.existsById(property.getPropertyId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Property not found");
         }
-        Property res = service.update(Property);
+        Property res = service.update(property);
         if(res == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Property not found");
         }

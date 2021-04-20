@@ -4,6 +4,7 @@ import com.wongc.stm.model.enums.ManagementStatus;
 import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.model.enums.PropertyType;
 
+import lombok.EqualsAndHashCode;
 import org.springframework.data.annotation.Id;
 
 import lombok.Data;

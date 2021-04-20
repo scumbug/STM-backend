@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.wongc.stm.dto.UnitRent;
 import com.wongc.stm.model.Lease;
 import com.wongc.stm.service.LeaseServiceImpl;
 
+import com.wongc.stm.wrapper.LeaseWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
-@RequestMapping("/leases")
+@RequestMapping("/api/leases")
 @PreAuthorize("hasRole('SUPER') or hasRole('SALES')")
 public class LeaseController {
     @Autowired
@@ -46,14 +48,23 @@ public class LeaseController {
         return Lease;
     }
 
-    @PostMapping("/{id}")
-    public Lease saveLease(@RequestBody Lease Lease) {
-        Lease res = service.save(Lease);
+    @GetMapping("/unit/{id}")
+    public Optional<Lease> findByUnitId(@PathVariable Long id) {
+        Optional<Lease> Lease = service.findByUnitId(id);
+        if(!Lease.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
+        }
+        return Lease;
+    }
+
+    @PostMapping("")
+    public Lease saveLease(@RequestBody LeaseWrapper payload) {
+        Lease res = service.convertTenant(payload.getLease(),payload.getContacts());
         return res;
     }
 
     @PutMapping("/{id}")
-    public Lease updatLease(@RequestBody Lease Lease) {
+    public Lease updateLease(@RequestBody Lease Lease) {
         if(!service.existsById(Lease.getLeaseId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lease not found");
         }
@@ -73,6 +84,11 @@ public class LeaseController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("status","Lease deleted");
         return map;
+    }
+
+    @GetMapping("/historical/{id}")
+    public List<UnitRent> getHistoricalRentByUnitId(@PathVariable Long id) {
+        return service.getHistoricalRentByUnitId(id);
     }
 
 }

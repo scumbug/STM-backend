@@ -1,28 +1,29 @@
 package com.wongc.stm.controller;
 
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wongc.stm.model.Payment;
 import com.wongc.stm.service.PaymentServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.sql.rowset.serial.SerialBlob;
+
 @RestController
-@RequestMapping("/payments")
+@RequestMapping("/api/payments")
 @PreAuthorize("hasRole('SUPER') or hasRole('SALES')")
 public class PaymentController {
     @Autowired
@@ -32,9 +33,15 @@ public class PaymentController {
      * Standard CRUD endpoints
      */
 
-    @GetMapping("/")
-    public List<Payment> getPayments() {
-        return (List<Payment>) service.findAll();
+    @GetMapping("")
+    public List<Payment> getPayments(@RequestParam(required = false, name = "tenantId") Long tenantId,
+                                     @RequestParam(required = false, name = "unitId") Long unitId)
+    {
+        if(tenantId != null && unitId != null) {
+            return service.findPaymentsForTenant(tenantId,unitId);
+        } else {
+            return (List<Payment>) service.findAll();
+        }
     }
 
     @GetMapping("/{id}")
@@ -46,14 +53,19 @@ public class PaymentController {
         return Payment;
     }
 
-    @PostMapping("/{id}")
-    public Payment savePayment(@RequestBody Payment Payment) {
-        Payment res = service.save(Payment);
-        return res;
+    @PutMapping(value = "",consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    public Payment updatePayment(@RequestPart("paymentProof") MultipartFile paymentProof,
+                               @RequestParam("form") String payment) throws IOException, SQLException {
+        ObjectMapper mapper = new ObjectMapper();
+        Payment res = mapper.readValue(payment,Payment.class);
+        //byte[] bytes = paymentProof.getBytes();
+        //Blob image = new SerialBlob(bytes);
+        //res.setPaymentProof(image);
+        return service.save(res);
     }
 
-    @PutMapping("/{id}")
-    public Payment updatPayment(@RequestBody Payment Payment) {
+    @PostMapping("")
+    public Payment savePayment(@RequestBody Payment Payment) {
         if(!service.existsById(Payment.getPaymentId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }

@@ -12,4 +12,6 @@ public interface ScheduleService {
     public Schedule update(Schedule Schedule);
     public void deleteById(Long id);
     public Schedule save(Schedule Schedule);
+
+    public Schedule confirmSchedule(Long id);
 }

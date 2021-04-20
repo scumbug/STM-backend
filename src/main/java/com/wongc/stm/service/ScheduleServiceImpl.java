@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.wongc.stm.model.Schedule;
+import com.wongc.stm.model.enums.ScheduleStatus;
 import com.wongc.stm.repository.ScheduleRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +48,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 	public Schedule save(Schedule Schedule) {
 		return repository.save(Schedule);
 	}
+
+    @Override
+    public Schedule confirmSchedule(Long id) {
+        Schedule schedule = repository.findById(id).get();
+        schedule.setScheduleStatus(ScheduleStatus.CONFIRMED);
+        return repository.save(schedule);
+    }
 
 }

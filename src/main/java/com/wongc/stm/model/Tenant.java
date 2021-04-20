@@ -4,7 +4,6 @@ import com.wongc.stm.model.enums.TenantStatus;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Embedded;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
@@ -16,6 +15,7 @@ public class Tenant {
     private String company;
     private TenantStatus tenantStatus;
     private String notes;
+    private Long leasedUnit;
 
     //@MappedCollection(keyColumn = "assigned_agent", idColumn = "user_id")
     //private User agent;

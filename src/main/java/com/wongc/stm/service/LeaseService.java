@@ -3,6 +3,8 @@ package com.wongc.stm.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.wongc.stm.dto.UnitRent;
+import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Lease;
 
 public interface LeaseService {
@@ -12,4 +14,9 @@ public interface LeaseService {
     public Lease update(Lease Lease);
     public void deleteById(Long id);
     public Lease save(Lease Lease);
+    public Lease convertTenant(Lease lease, List<Contact> contacts);
+
+    public Optional<Lease> findByUnitId(Long id);
+
+    List<UnitRent> getHistoricalRentByUnitId(Long id);
 }
