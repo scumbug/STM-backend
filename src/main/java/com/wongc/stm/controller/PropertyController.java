@@ -38,6 +38,7 @@ public class PropertyController {
      * Standard CRUD endpoints
      */
 
+    @PreAuthorize("hasRole('SALES') or hasRole('SUPER') or hasRole('ADMIN')")
     @GetMapping("")
     public List<Property> getProperties() {
         return service.findByPropertyStatus(PropertyStatus.ACTIVE);

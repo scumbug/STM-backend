@@ -39,7 +39,7 @@ public class PaymentServiceImpl implements PaymentService {
         Payment res = repository.findById(payment.getPaymentId()).get();
         res.setAmount(payment.getAmount());
         res.setPaymentDate(Date.valueOf(LocalDate.now()));
-        //res.setPaymentProof(payment.getPaymentProof());
+        res.setPaymentProof(payment.getPaymentProof());
         return repository.save(res);
     }
 

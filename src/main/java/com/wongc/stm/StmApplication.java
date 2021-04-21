@@ -1,24 +1,30 @@
 package com.wongc.stm;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.servlet.MultipartConfigElement;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @EnableAutoConfiguration
 @ComponentScan
 @SpringBootConfiguration
 @EnableScheduling
-public class StmApplication {
+public class StmApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StmApplication.class, args);
@@ -42,4 +48,14 @@ public class StmApplication {
 		return modelMapper;
 	}
 
+	@Override
+	public void run(String... args) throws Exception {
+		Path root = Paths.get("uploads");
+		try {
+			FileSystemUtils.deleteRecursively(root.toFile());
+			Files.createDirectory(root);
+		} catch (IOException e) {
+			throw new RuntimeException("Cant init upload folder!");
+		}
+	}
 }

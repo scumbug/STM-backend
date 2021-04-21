@@ -48,6 +48,7 @@ public class PropertyServiceImpl implements PropertyService {
 	public void deleteById(Long id) {
         Property res = repository.findById(id).get();
         res.setPropertyStatus(PropertyStatus.ARCHIVED);
+        repository.save(res);
 	}
 
     @Override

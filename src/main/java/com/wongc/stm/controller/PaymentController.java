@@ -1,6 +1,9 @@
 package com.wongc.stm.controller;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -58,10 +61,16 @@ public class PaymentController {
                                @RequestParam("form") String payment) throws IOException, SQLException {
         ObjectMapper mapper = new ObjectMapper();
         Payment res = mapper.readValue(payment,Payment.class);
+
+        // Save file to local
+        Path root = Paths.get("uploads");
+        Files.copy(paymentProof.getInputStream(),root.resolve(paymentProof.getOriginalFilename()));
+        res.setPaymentProof(paymentProof.getOriginalFilename());
+
         //byte[] bytes = paymentProof.getBytes();
         //Blob image = new SerialBlob(bytes);
         //res.setPaymentProof(image);
-        return service.save(res);
+        return service.update(res);
     }
 
     @PostMapping("")

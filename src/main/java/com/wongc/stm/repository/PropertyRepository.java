@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public interface PropertyRepository extends PagingAndSortingRepository<Property,Long>{
-    @Query("SELECT COUNT(*) FROM units INNER JOIN leases on units.unit_id = leases.unit_id WHERE property_id = :propertyId")
+    @Query("SELECT COUNT(*) FROM units INNER JOIN leases on units.unit_id = leases.unit_id WHERE property_id = :propertyId AND archive = 0")
     Long getALlLeasedUnitById(@Param("propertyId") Long propertyId);
 
     List<Property> findByPropertyStatus(PropertyStatus active);

@@ -20,7 +20,6 @@ public class Payment {
     private Date paymentDate;
     private Date paymentStartPeriod;
     private Date paymentEndPeriod;
-    @JsonIgnore
-    private Blob paymentProof;
+    private String paymentProof;
 
 }
