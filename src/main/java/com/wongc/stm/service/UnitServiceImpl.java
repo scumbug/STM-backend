@@ -1,23 +1,21 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.model.Unit;
-import com.wongc.stm.repository.LeaseRepository;
 import com.wongc.stm.repository.UnitRepository;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class UnitServiceImpl implements UnitService {
     @Autowired
-    private UnitRepository repository;
+    UnitRepository repository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
     @Override
     public List<Unit> findAll() {

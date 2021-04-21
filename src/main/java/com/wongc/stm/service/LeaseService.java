@@ -1,22 +1,22 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.dto.UnitRent;
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Lease;
 
-public interface LeaseService {
-    public List<Lease> findAll();
-    public Optional<Lease> findById(Long id);
-    public boolean existsById(Long id);
-    public Lease update(Lease Lease);
-    public void deleteById(Long id);
-    public Lease save(Lease Lease);
-    public Lease convertTenant(Lease lease, List<Contact> contacts);
+import java.util.List;
+import java.util.Optional;
 
-    public Optional<Lease> findByUnitId(Long id);
+public interface LeaseService {
+    List<Lease> findAll();
+    Optional<Lease> findById(Long id);
+    boolean existsById(Long id);
+    Lease update(Lease Lease);
+    void deleteById(Long id);
+    Lease save(Lease Lease);
+    Lease convertTenant(Lease lease, List<Contact> contacts);
+
+    Optional<Lease> findByUnitId(Long id);
 
     List<UnitRent> getHistoricalRentByUnitId(Long id);
 }

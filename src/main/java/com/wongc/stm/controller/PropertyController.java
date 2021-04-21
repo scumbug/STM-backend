@@ -1,38 +1,25 @@
 package com.wongc.stm.controller;
 
+import com.wongc.stm.model.Property;
+import com.wongc.stm.model.enums.PropertyStatus;
+import com.wongc.stm.service.PropertyServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import com.wongc.stm.dto.PropertyUpdateDTO;
-import com.wongc.stm.model.Property;
-import com.wongc.stm.model.enums.PropertyStatus;
-import com.wongc.stm.service.PropertyServiceImpl;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/properties")
 @PreAuthorize("hasRole('SUPER') or hasRole('ADMIN')")
 public class PropertyController {
     @Autowired
-    private PropertyServiceImpl service;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    PropertyServiceImpl service;
 
     /*
      * Standard CRUD endpoints
@@ -54,9 +41,8 @@ public class PropertyController {
     }
 
     @PostMapping("")
-    public Property saveProperty(@RequestBody Property Property) {
-        Property res = service.save(Property);
-        return res;
+    public Property saveProperty(@RequestBody Property property) {
+        return service.save(property);
     }
 
     @PutMapping("")
@@ -77,7 +63,7 @@ public class PropertyController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Property not found");
         }
         service.deleteById(id);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("status","Property deleted");
         return map;
     }

@@ -1,15 +1,15 @@
 package com.wongc.stm.service;
 
+import com.wongc.stm.model.Amenity;
+
 import java.util.List;
 import java.util.Optional;
 
-import com.wongc.stm.model.Amenity;
-
 public interface AmenityService {
-    public List<Amenity> findAll();
-    public Optional<Amenity> findById(Long id);
-    public boolean existsById(Long id);
-    public Amenity update(Amenity Amenity);
-    public void deleteById(Long id);
-    public Amenity save(Amenity Amenity);
+    List<Amenity> findAll();
+    Optional<Amenity> findById(Long id);
+    boolean existsById(Long id);
+    Amenity update(Amenity Amenity);
+    void deleteById(Long id);
+    Amenity save(Amenity Amenity);
 }

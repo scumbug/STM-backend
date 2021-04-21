@@ -1,19 +1,18 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.model.Schedule;
 import com.wongc.stm.model.enums.ScheduleStatus;
 import com.wongc.stm.repository.ScheduleRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
-    private ScheduleRepository repository;
+    ScheduleRepository repository;
 
     @Override
     public List<Schedule> findAll() {

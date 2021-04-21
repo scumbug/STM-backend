@@ -2,11 +2,10 @@ package com.wongc.stm.scheduler;
 
 import com.wongc.stm.model.Lease;
 import com.wongc.stm.model.Payment;
-import com.wongc.stm.repository.SettingRepository;
 import com.wongc.stm.repository.LeaseRepository;
 import com.wongc.stm.repository.PaymentRepository;
+import com.wongc.stm.repository.SettingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -22,13 +21,13 @@ import java.util.stream.Collectors;
 public class PaymentScheduler {
 
     @Autowired
-    private LeaseRepository leaseRepository;
+    LeaseRepository leaseRepository;
 
     @Autowired
-    private PaymentRepository paymentRepository;
+    PaymentRepository paymentRepository;
 
     @Autowired
-    private SettingRepository settingRepository;
+    SettingRepository settingRepository;
 
     private final LocalDate today = LocalDate.now();
 

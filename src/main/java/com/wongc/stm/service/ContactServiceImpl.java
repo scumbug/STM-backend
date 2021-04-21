@@ -1,18 +1,17 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.repository.ContactRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContactServiceImpl implements ContactService {
     @Autowired
-    private ContactRepository repository;
+    ContactRepository repository;
 
     @Override
     public List<Contact> findAll() {

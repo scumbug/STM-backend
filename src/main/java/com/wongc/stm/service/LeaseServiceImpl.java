@@ -1,8 +1,5 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.dto.UnitRent;
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Lease;
@@ -10,22 +7,23 @@ import com.wongc.stm.model.Tenant;
 import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.repository.ContactRepository;
 import com.wongc.stm.repository.LeaseRepository;
-
 import com.wongc.stm.repository.TenantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class LeaseServiceImpl implements LeaseService {
     @Autowired
-    private LeaseRepository repository;
+    LeaseRepository repository;
 
     @Autowired
-    private TenantRepository tenantRepository;
+    TenantRepository tenantRepository;
 
     @Autowired
-    private ContactRepository contactRepository;
+    ContactRepository contactRepository;
 
     @Override
     public List<Lease> findAll() {

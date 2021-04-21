@@ -1,12 +1,9 @@
 package com.wongc.stm.controller;
 
-import com.wongc.stm.dto.TenantDTO;
-import com.wongc.stm.model.Property;
 import com.wongc.stm.model.Tenant;
 import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.service.TenantServiceImpl;
 import com.wongc.stm.wrapper.TenantWrapper;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,36 +12,31 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tenants")
 @PreAuthorize("hasRole('SUPER') or hasRole('SALES')")
 public class TenantController {
     @Autowired
-    private TenantServiceImpl service;
-
-    @Autowired
-    private ModelMapper modelMapper;
+    TenantServiceImpl service;
 
     @GetMapping("")
-    public List<Tenant> getTenants(@RequestParam(required = true) TenantStatus tenantStatus) {
+    public List<Tenant> getTenants(@RequestParam() TenantStatus tenantStatus) {
         if(tenantStatus == TenantStatus.POTENTIAL) {
-            return (List<Tenant>) service.findAllPotential();
+            return service.findAllPotential();
         } else if(tenantStatus == TenantStatus.ACTIVE) {
-            return (List<Tenant>) service.findAllActive();
+            return service.findAllActive();
         } else if (tenantStatus == TenantStatus.PENDING) {
-            return (List<Tenant>) service.findAllPending();
+            return service.findAllPending();
         }
         else {
-            return (List<Tenant>) service.findAll();
+            return service.findAll();
         }
     }
 
     @PostMapping("")
     public Tenant addTenant(@RequestBody TenantWrapper payload) {
-        Tenant res = service.save(payload.getTenant(),payload.getUser(),payload.getContact());
-        return res;
+        return service.save(payload.getTenant(),payload.getUser(),payload.getContact());
     }
 
     @GetMapping("/aggregate")

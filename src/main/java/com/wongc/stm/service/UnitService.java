@@ -1,19 +1,19 @@
 package com.wongc.stm.service;
 
+import com.wongc.stm.model.Unit;
+
 import java.util.List;
 import java.util.Optional;
 
-import com.wongc.stm.model.Unit;
-
 public interface UnitService {
-    public List<Unit> findAll();
-    public Optional<Unit> findById(Long id);
-    public boolean existsById(Long id);
-    public Unit update(Unit Unit);
-    public void deleteById(Long id);
-    public Unit save(Unit Unit);
-    public List<Unit> saveAll(List<Unit> Units);
-    public List<Unit> findByPropertyId(Long id);
+    List<Unit> findAll();
+    Optional<Unit> findById(Long id);
+    boolean existsById(Long id);
+    Unit update(Unit Unit);
+    void deleteById(Long id);
+    Unit save(Unit Unit);
+    List<Unit> saveAll(List<Unit> Units);
+    List<Unit> findByPropertyId(Long id);
 
-    public List<Unit> findFreeUnits(Long id);
+    List<Unit> findFreeUnits(Long id);
 }

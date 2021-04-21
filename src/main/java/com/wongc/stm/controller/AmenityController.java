@@ -14,7 +14,7 @@ import java.util.Optional;
 @PreAuthorize("hasRole('SUPER') or hasRole('ADMIN') or hasRole('SALES')")
 public class AmenityController {
     @Autowired
-    private AmenityService amenityService;
+    AmenityService amenityService;
 
     @PreAuthorize("hasRole('SUPER') or hasRole('TENANT')")
     @GetMapping("")

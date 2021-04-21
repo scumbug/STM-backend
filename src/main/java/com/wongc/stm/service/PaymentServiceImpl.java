@@ -1,23 +1,19 @@
 package com.wongc.stm.service;
 
+import com.wongc.stm.model.Payment;
+import com.wongc.stm.repository.PaymentRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import com.wongc.stm.model.Payment;
-import com.wongc.stm.repository.PaymentRepository;
-
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 @Service
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
-    private PaymentRepository repository;
-    @Autowired
-    private ModelMapper modelMapper;
+    PaymentRepository repository;
 
     @Override
     public List<Payment> findAll() {

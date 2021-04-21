@@ -1,24 +1,22 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
-import com.wongc.stm.dto.PropertyUpdateDTO;
 import com.wongc.stm.model.Property;
 import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.repository.PropertyRepository;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class PropertyServiceImpl implements PropertyService {
     @Autowired
-    private PropertyRepository repository;
+    PropertyRepository repository;
 
     @Autowired
-    private ModelMapper modelMapper;
+    ModelMapper modelMapper;
 
 
     @Override

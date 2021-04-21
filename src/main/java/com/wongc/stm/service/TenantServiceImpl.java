@@ -1,30 +1,28 @@
 package com.wongc.stm.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Tenant;
 import com.wongc.stm.model.User;
 import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.repository.ContactRepository;
 import com.wongc.stm.repository.TenantRepository;
-
-import com.wongc.stm.repository.UserRepository;
 import com.wongc.stm.wrapper.TenantWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TenantServiceImpl implements TenantService {
     @Autowired
-    private TenantRepository tenantRepository;
+    TenantRepository tenantRepository;
     @Autowired
-    private UserService userService;
+    UserService userService;
     @Autowired
-    private ContactRepository contactRepository;
+    ContactRepository contactRepository;
 
     @Override
     public List<Tenant> findAll() {

@@ -1,15 +1,11 @@
 package com.wongc.stm.model;
 
-import java.sql.Date;
-import java.util.EnumSet;
-import java.util.Set;
-
-import com.wongc.stm.model.enums.Days;
-
-import org.springframework.data.annotation.Id;
-
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.sql.Date;
+import java.util.Set;
 
 @Data
 @Table("amenities")

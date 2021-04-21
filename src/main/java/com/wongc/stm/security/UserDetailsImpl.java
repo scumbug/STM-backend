@@ -1,22 +1,21 @@
 package com.wongc.stm.security;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import com.wongc.stm.model.User;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 public class UserDetailsImpl implements UserDetails {
 
     private static final long serialVersionUID = 1L;
-    private String username;
-    private String password;
-    private String type;
-    private Long id;
+    private final String username;
+    private final String password;
+    private final String type;
+    private final Long id;
 
     public UserDetailsImpl(User user) {
         this.username = user.getUsername();
@@ -29,7 +28,7 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         
-        List<GrantedAuthority> roles = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> roles = new ArrayList<>();
 
         roles.add(new SimpleGrantedAuthority("ROLE_" + type));
 

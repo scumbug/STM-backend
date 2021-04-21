@@ -1,31 +1,31 @@
 package com.wongc.stm.service;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.wongc.stm.model.Contact;
 import com.wongc.stm.model.Tenant;
 import com.wongc.stm.model.User;
 import com.wongc.stm.model.enums.TenantStatus;
 import com.wongc.stm.wrapper.TenantWrapper;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface TenantService {
-    public List<Tenant> findAll();
-    public Optional<Tenant> findById(Long id);
-    public boolean existsById(Long id);
-    public Tenant update(Tenant Tenant);
-    public void deleteById(Long id);
-    public Tenant save(Tenant tenant, User user, List<Contact> contact);
+    List<Tenant> findAll();
+    Optional<Tenant> findById(Long id);
+    boolean existsById(Long id);
+    Tenant update(Tenant Tenant);
+    void deleteById(Long id);
+    Tenant save(Tenant tenant, User user, List<Contact> contact);
 
-    public List<Tenant> findAllPotential();
+    List<Tenant> findAllPotential();
 
-    public List<Tenant> findAllActive();
+    List<Tenant> findAllActive();
 
-    public List<TenantWrapper> aggregate(TenantStatus tenantStatus);
+    List<TenantWrapper> aggregate(TenantStatus tenantStatus);
 
-    public Optional<Tenant> convert(Long id);
+    Optional<Tenant> convert(Long id);
 
-    public List<Tenant> findAllPending();
+    List<Tenant> findAllPending();
 
     Tenant findByUserId(Long id);
 }

@@ -1,15 +1,14 @@
 package com.wongc.stm.controller;
 
-import java.util.*;
-
 import com.wongc.stm.model.Unit;
 import com.wongc.stm.service.UnitServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -17,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class UnitController {
     @Autowired
-    private UnitServiceImpl service;
+    UnitServiceImpl service;
 
     /*
      * Standard CRUD endpoints
@@ -25,7 +24,7 @@ public class UnitController {
 
     @GetMapping("/units")
     public List<Unit> getUnits() {
-        return (List<Unit>) service.findAll();
+        return service.findAll();
     }
 
     @GetMapping("/units/{id}")
@@ -38,23 +37,21 @@ public class UnitController {
     }
 
     @PostMapping("/units")
-    public Unit saveUnit(@RequestBody Unit Unit) {
-        Unit res = service.save(Unit);
-        return res;
+    public Unit saveUnit(@RequestBody Unit unit) {
+        return service.save(unit);
     }
 
     @PostMapping("/units/bulk")
-    public List<Unit> saveAllUnits(@RequestBody ArrayList<Unit> Units) {
-        List<Unit> res = service.saveAll(Units);
-        return res;
+    public List<Unit> saveAllUnits(@RequestBody ArrayList<Unit> units) {
+        return service.saveAll(units);
     }
 
     @PutMapping("/units")
-    public Unit updateUnit(@RequestBody Unit Unit) {
-        if (!service.existsById(Unit.getUnitId())) {
+    public Unit updateUnit(@RequestBody Unit unit) {
+        if (!service.existsById(unit.getUnitId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unit not found");
         }
-        Unit res = service.update(Unit);
+        Unit res = service.update(unit);
         if (res == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unit not found");
         }
@@ -67,19 +64,19 @@ public class UnitController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Unit not found");
         }
         service.deleteById(id);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("status", "Unit deleted");
         return map;
     }
 
     @GetMapping("/properties/{id}/unit")
     public List<Unit> getUnitsByPropertyId(@PathVariable Long id) {
-        return (List<Unit>) service.findByPropertyId(id);
+        return service.findByPropertyId(id);
     }
 
     @GetMapping("/properties/{id}/unit/free")
     public List<Unit> getUnitsByPropertyIdAndFree(@PathVariable Long id) {
-        return (List<Unit>) service.findFreeUnits(id);
+        return service.findFreeUnits(id);
     }
 
 }

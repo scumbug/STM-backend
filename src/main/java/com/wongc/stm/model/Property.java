@@ -3,11 +3,8 @@ package com.wongc.stm.model;
 import com.wongc.stm.model.enums.ManagementStatus;
 import com.wongc.stm.model.enums.PropertyStatus;
 import com.wongc.stm.model.enums.PropertyType;
-
-import lombok.EqualsAndHashCode;
-import org.springframework.data.annotation.Id;
-
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
 

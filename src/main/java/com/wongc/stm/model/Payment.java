@@ -1,13 +1,10 @@
 package com.wongc.stm.model;
 
-import java.sql.Blob;
-import java.sql.Date;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
-
 import org.springframework.data.relational.core.mapping.Table;
+
+import java.sql.Date;
 
 @Data
 @Table("payments")

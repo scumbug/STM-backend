@@ -1,20 +1,8 @@
 package com.wongc.stm.controller;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.sql.Blob;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wongc.stm.model.Payment;
 import com.wongc.stm.service.PaymentServiceImpl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,14 +11,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.sql.rowset.serial.SerialBlob;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payments")
-@PreAuthorize("hasRole('SUPER') or hasRole('SALES')")
+@PreAuthorize("hasRole('SUPER') or hasRole('SALES') or hasRole('TENANT')")
 public class PaymentController {
     @Autowired
-    private PaymentServiceImpl service;
+    PaymentServiceImpl service;
 
         /*
      * Standard CRUD endpoints
@@ -43,7 +38,7 @@ public class PaymentController {
         if(tenantId != null && unitId != null) {
             return service.findPaymentsForTenant(tenantId,unitId);
         } else {
-            return (List<Payment>) service.findAll();
+            return service.findAll();
         }
     }
 
@@ -58,7 +53,7 @@ public class PaymentController {
 
     @PutMapping(value = "",consumes = { MediaType.APPLICATION_OCTET_STREAM_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     public Payment updatePayment(@RequestPart("paymentProof") MultipartFile paymentProof,
-                               @RequestParam("form") String payment) throws IOException, SQLException {
+                               @RequestParam("form") String payment) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         Payment res = mapper.readValue(payment,Payment.class);
 
@@ -74,11 +69,11 @@ public class PaymentController {
     }
 
     @PostMapping("")
-    public Payment savePayment(@RequestBody Payment Payment) {
-        if(!service.existsById(Payment.getPaymentId())) {
+    public Payment savePayment(@RequestBody Payment payment) {
+        if(!service.existsById(payment.getPaymentId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
-        Payment res = service.update(Payment);
+        Payment res = service.update(payment);
         if(res == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
@@ -91,7 +86,7 @@ public class PaymentController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Payment not found");
         }
         service.deleteById(id);
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
         map.put("status","Payment deleted");
         return map;
     }

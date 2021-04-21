@@ -1,19 +1,13 @@
 package com.wongc.stm.security;
 
-import java.util.Date;
-
+import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class JwtUtils {
@@ -34,7 +28,7 @@ public class JwtUtils {
 		return Jwts.builder()
 				.setSubject((user.getUsername()))
 				.setIssuedAt(new Date())
-				.setExpiration(new Date((new Date()).getTime() + (jwtExpiry * 1000 * 60 )))
+				.setExpiration(new Date((new Date()).getTime() + ((long) jwtExpiry * 1000 * 60 )))
 				.signWith(SignatureAlgorithm.HS512, jwtSecret)
 				.compact();
 	}
